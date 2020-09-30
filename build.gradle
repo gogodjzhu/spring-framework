@@ -1108,12 +1108,7 @@ project("gogo-mock") {
 	description = "gogodjzhu mock module"
 
 	dependencies {
-		compile(project(":spring-beans"))
-		compile(project(":spring-core"))
-		compile(project(":spring-tx"))
-		compile(project(":spring-jdbc"))
-		compile(project(":spring-orm"))
-		compile(project(":spring-aop"))
+		compile(project(":spring-context"))
 	}
 }
 
