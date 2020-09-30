@@ -10,10 +10,6 @@ buildscript {
 	}
 }
 
-plugins {
-	id "org.sonarqube" version "1.1"
-}
-
 ext {
 	linkHomepage = 'https://projects.spring.io/spring-framework'
 	linkCi = 'https://build.spring.io/browse/SPR'
@@ -221,12 +217,6 @@ configure(subprojects - project(":spring-build-src")) { subproject ->
 		jacoco("org.jacoco:org.jacoco.agent:0.7.5.201505241946:runtime")
 	}
 
-	gradle.taskGraph.whenReady {taskGraph ->
-		if (taskGraph.hasTask(':sonarqube')) {
-			test.jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec,includes=org.springframework.*"
-		}
-	}
-
 	jar {
 		manifest.attributes["Created-By"] =
 			"${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
@@ -271,19 +261,6 @@ configure(subprojects - project(":spring-build-src")) { subproject ->
 		archives sourcesJar
 		archives javadocJar
 	}
-}
-
-project("spring-build-src") {
-	description = "Exposes gradle buildSrc for IDE support"
-
-	apply plugin: "groovy"
-
-	dependencies {
-		compile gradleApi()
-		compile localGroovy()
-	}
-
-	configurations.archives.artifacts.clear()
 }
 
 project("spring-core") {
@@ -1127,20 +1104,6 @@ project("spring-framework-bom") {
 	}
 }
 
-sonarqube {
-	properties {
-		property "sonar.projectName", "Spring Framework"
-		property "sonar.profile", "Spring Framework"
-		property "sonar.jacoco.reportPath", "${buildDir.name}/jacoco.exec"
-		property "sonar.links.homepage", linkHomepage
-		property "sonar.links.ci", linkCi
-		property "sonar.links.issue", linkIssue
-		property "sonar.links.scm", linkScmUrl
-		property "sonar.links.scm_dev", linkScmDevConnection
-		property "sonar.java.coveragePlugin", "jacoco"
-	}
-}
-
 configure(rootProject) {
 	description = "Spring Framework"
 
@@ -1382,18 +1345,6 @@ configure(rootProject) {
 }
 
 configure([project(':spring-build-src'), project(':spring-framework-bom')]) {
-	sonarqube {
-		skipProject = true
-	}
-}
-
-configure(project(':spring-core')) {
-	sonarqube {
-		properties {
-			property "sonar.exclusions",
-					"src/main/java/org/springframework/cglib/**/*,src/main/java/org/springframework/asm/**/*"
-		}
-	}
 }
 
 /*
