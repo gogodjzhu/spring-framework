@@ -1104,6 +1104,19 @@ project("spring-framework-bom") {
 	}
 }
 
+project("gogo-mock") {
+	description = "gogodjzhu mock module"
+
+	dependencies {
+		compile(project(":spring-beans"))
+		compile(project(":spring-core"))
+		compile(project(":spring-tx"))
+		compile(project(":spring-jdbc"))
+		compile(project(":spring-orm"))
+		compile(project(":spring-aop"))
+	}
+}
+
 configure(rootProject) {
 	description = "Spring Framework"
 
